@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Minecraft Portal - Buscador de ítems y jugadores de Minecraft con información técnica y skins en tiempo real.">
+    <title>Minecraft Portal - Buscador de Ítems y Jugadores</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><rect x=%2225%22 y=%2225%22 width=%2250%22 height=%2250%22 fill=%22%231e1e24%22/></svg>">
+</head>
+<body>
+    <div class="app-background-glow"></div>
+    
+    <header class="main-header">
+        <div class="header-badge">Minecraft Data Explorer</div>
+        <h1 class="main-title">Minecraft Portal</h1>
+        <p class="subtitle">Buscador interactivo de ítems, bloques y perfiles de jugadores en tiempo real mediante APIs públicas.</p>
+    </header>
+
+    <main class="grid-container">
+        <section class="search-panel item-panel" aria-labelledby="item-panel-title">
+            <div class="panel-header">
+                <div class="panel-icon-badge item-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 id="item-panel-title" class="panel-title">Buscador de Ítems</h2>
+                    <p class="panel-desc">Explora bloques, herramientas e ítems del juego.</p>
+                </div>
+            </div>
+
+            <form id="itemSearchForm" class="search-form" onsubmit="return false;">
+                <label for="itemInput" class="visually-hidden">Nombre del ítem</label>
+                <div class="input-wrapper">
+                    <span class="search-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                    </span>
+                    <input 
+                        type="text" 
+                        id="itemInput" 
+                        name="itemInput" 
+                        placeholder="Ej: Diamond Sword, TNT, Apple..." 
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="button" id="itemClearBtn" class="clear-btn" aria-label="Limpiar búsqueda" hidden>&times;</button>
+                </div>
+                <button type="submit" id="itemSearchBtn" class="search-btn item-btn">
+                    <span>Buscar Ítem</span>
+                </button>
+            </form>
+
+            <div id="itemResult" class="result-container" aria-live="polite"></div>
+        </section>
+
+        <section class="search-panel player-panel" aria-labelledby="player-panel-title">
+            <div class="panel-header">
+                <div class="panel-icon-badge player-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 id="player-panel-title" class="panel-title">Buscador de Jugadores</h2>
+                    <p class="panel-desc">Consulta perfiles, skins completas y datos de Mojang.</p>
+                </div>
+            </div>
+
+            <form id="playerSearchForm" class="search-form" onsubmit="return false;">
+                <label for="playerInput" class="visually-hidden">Nombre de usuario de Minecraft</label>
+                <div class="input-wrapper">
+                    <span class="search-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                    </span>
+                    <input 
+                        type="text" 
+                        id="playerInput" 
+                        name="playerInput" 
+                        placeholder="Ej: Notch, Jeb_, Dream..." 
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="button" id="playerClearBtn" class="clear-btn" aria-label="Limpiar búsqueda" hidden>&times;</button>
+                </div>
+                <button type="submit" id="playerSearchBtn" class="search-btn player-btn">
+                    <span>Buscar Jugador</span>
+                </button>
+            </form>
+
+            <div id="playerResult" class="result-container" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>Proyecto de desarrollo web universitario &bull; Consumo de APIs públicas de Minecraft (Minecraft Items API &amp; PlayerDB + MC-Heads)</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
