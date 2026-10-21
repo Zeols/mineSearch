@@ -3,38 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Minecraft Portal - Buscador de ítems y jugadores de Minecraft con información técnica y skins en tiempo real.">
+    <meta name="description" content="Minecraft Portal - Buscador de ítems y jugadores con interfaz auténtica de Minecraft Java Edition.">
     <title>Minecraft Portal - Buscador de Ítems y Jugadores</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
     
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><rect x=%2225%22 y=%2225%22 width=%2250%22 height=%2250%22 fill=%22%231e1e24%22/></svg>">
+    <link rel="stylesheet" href="css/styles.css?v=2">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%232cba58%22/><rect y=%227%22 width=%2216%22 height=%229%22 fill=%22%23795548%22/></svg>">
 </head>
 <body>
-    <div class="app-background-glow"></div>
-    
+    <canvas id="minecraftParticles" class="minecraft-particles" aria-hidden="true"></canvas>
+    <div class="dirt-overlay" aria-hidden="true"></div>
+
     <header class="main-header">
-        <div class="header-badge">Minecraft Data Explorer</div>
-        <h1 class="main-title">Minecraft Portal</h1>
-        <p class="subtitle">Buscador interactivo de ítems, bloques y perfiles de jugadores en tiempo real mediante APIs públicas.</p>
+        <div class="header-badge">MINECRAFT DATA EXPLORER</div>
+        <h1 class="main-title">MINECRAFT PORTAL</h1>
+        <p class="subtitle">Explorador de inventario y base de datos de jugadores</p>
     </header>
 
     <main class="grid-container">
-        <section class="search-panel item-panel" aria-labelledby="item-panel-title">
+        <section class="mc-panel item-panel" aria-labelledby="item-panel-title">
             <div class="panel-header">
                 <div class="panel-icon-badge item-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                        <path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm2 2h8v2H8V8zm0 4h8v2H8v-2z"/>
                     </svg>
                 </div>
                 <div>
-                    <h2 id="item-panel-title" class="panel-title">Buscador de Ítems</h2>
-                    <p class="panel-desc">Explora bloques, herramientas e ítems del juego.</p>
+                    <h2 id="item-panel-title" class="panel-title">BUSCADOR DE ITEM</h2>
+                    <p class="panel-desc">Catalogo de bloques, armas y consumibles</p>
                 </div>
             </div>
 
@@ -42,9 +42,9 @@
                 <label for="itemInput" class="visually-hidden">Nombre del ítem</label>
                 <div class="input-wrapper">
                     <span class="search-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"/>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="10" cy="10" r="7"/>
+                            <line x1="21" y1="21" x2="15" y2="15"/>
                         </svg>
                     </span>
                     <input 
@@ -53,39 +53,39 @@
                         name="itemInput" 
                         placeholder="Ej: Diamond Sword, TNT, Apple..." 
                         autocomplete="off"
+                        spellcheck="false"
                         required
                     >
                     <button type="button" id="itemClearBtn" class="clear-btn" aria-label="Limpiar búsqueda" hidden>&times;</button>
                 </div>
-                <button type="submit" id="itemSearchBtn" class="search-btn item-btn">
-                    <span>Buscar Ítem</span>
+                <button type="submit" id="itemSearchBtn" class="mc-button item-btn">
+                    <span>BUSCAR ITEM</span>
                 </button>
             </form>
 
             <div id="itemResult" class="result-container" aria-live="polite"></div>
         </section>
 
-        <section class="search-panel player-panel" aria-labelledby="player-panel-title">
+        <section class="mc-panel player-panel" aria-labelledby="player-panel-title">
             <div class="panel-header">
                 <div class="panel-icon-badge player-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                        <path d="M7 2h10v10H7V2zm2 2v6h6V4H9zm-5 10h16v8H4v-8zm2 2v4h12v-4H6z"/>
                     </svg>
                 </div>
                 <div>
-                    <h2 id="player-panel-title" class="panel-title">Buscador de Jugadores</h2>
-                    <p class="panel-desc">Consulta perfiles, skins completas y datos de Mojang.</p>
+                    <h2 id="player-panel-title" class="panel-title">BUSCADOR DE JUGADOR</h2>
+                    <p class="panel-desc">Perfiles oficiales, skins 3D y UUIDs</p>
                 </div>
             </div>
 
             <form id="playerSearchForm" class="search-form" onsubmit="return false;">
-                <label for="playerInput" class="visually-hidden">Nombre de usuario de Minecraft</label>
+                <label for="playerInput" class="visually-hidden">Nombre del jugador</label>
                 <div class="input-wrapper">
                     <span class="search-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"/>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="10" cy="10" r="7"/>
+                            <line x1="21" y1="21" x2="15" y2="15"/>
                         </svg>
                     </span>
                     <input 
@@ -94,12 +94,13 @@
                         name="playerInput" 
                         placeholder="Ej: Notch, Jeb_, Dream..." 
                         autocomplete="off"
+                        spellcheck="false"
                         required
                     >
                     <button type="button" id="playerClearBtn" class="clear-btn" aria-label="Limpiar búsqueda" hidden>&times;</button>
                 </div>
-                <button type="submit" id="playerSearchBtn" class="search-btn player-btn">
-                    <span>Buscar Jugador</span>
+                <button type="submit" id="playerSearchBtn" class="mc-button player-btn">
+                    <span>BUSCAR JUGADOR</span>
                 </button>
             </form>
 
@@ -108,9 +109,11 @@
     </main>
 
     <footer class="main-footer">
-        <p>Proyecto de desarrollo web universitario &bull; Consumo de APIs públicas de Minecraft (Minecraft Items API &amp; PlayerDB + MC-Heads)</p>
+        <div class="footer-box">
+            <p>MINECRAFT DATA EXPLORER &bull; DESARROLLO WEB &bull; APIS: MINECRAFT-DATA &amp; PLAYERDB / MC-HEADS</p>
+        </div>
     </footer>
 
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=2"></script>
 </body>
 </html>
